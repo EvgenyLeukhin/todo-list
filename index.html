@@ -25,12 +25,34 @@
   <meta name="apple-mobile-web-app-title" content="Todo List" />
   <link rel="manifest" href="favicons/site.webmanifest" />
   
-  <title>TODO-LIST by HTML/CSS/JavaScript</title>
+  <title>TODO-LIST by HTML/CSS/JS</title>
 
   <style>
     *, *::before, *::after { 
       box-sizing: border-box;
     }
+
+    :root {
+      /* css vars */
+      --s: 82px; /* control the size*/
+      --c1: #b2b2b2;
+      --c2: #ffffff;
+      --c3: #d9d9d9;
+      
+      --_g: var(--c3) 0 120deg,#0000 0;
+    }
+
+    html {
+
+    background:
+      conic-gradient(from -60deg at 50% calc(100%/3),var(--_g)),
+      conic-gradient(from 120deg at 50% calc(200%/3),var(--_g)),
+      conic-gradient(from  60deg at calc(200%/3),var(--c3) 60deg,var(--c2) 0 120deg,#0000 0),
+      conic-gradient(from 180deg at calc(100%/3),var(--c1) 60deg,var(--_g)),
+      linear-gradient(90deg,var(--c1)   calc(100%/6),var(--c2) 0 50%,
+                            var(--c1) 0 calc(500%/6),var(--c2) 0);
+    background-size: calc(1.732*var(--s)) var(--s);
+  }
 
     html, body {
       margin: 0;
@@ -42,7 +64,7 @@
       flex-direction: column;
       justify-content: center;
       min-height: 100vh;
-      background-color: rgba(0, 0, 0, 0.33);
+      background-color: rgba(0, 0, 0, 0.25);
       font-family: sans-serif;
     }
 
@@ -223,7 +245,7 @@
 
     // html элементы
     const input = document.querySelector('#input');
-    const buton = document.querySelector('#button');
+    const button = document.querySelector('#button');
     const list = document.querySelector('#list');
 
     // рендер списка при загрузке
@@ -274,7 +296,7 @@
         // вставляем <li> в список
         list.appendChild(li);
 
-        // навешивание события клика на тег <b class="check"> для отмечания todo
+        // навешивание события клика на тег <li> для отмечания todo
         li.addEventListener('click', () => {
           checkTodo(todoItem.id);
         });
@@ -320,24 +342,26 @@
     // функция удаления todo по id
     const removeTodo = (id) => {
       // I вариант - с помощью .filter()
-      // todo = todo.filter((item) => item.id !== id);
+      todo = todo.filter((item) => item.id !== id);
 
       // II вариант - с помощью .findIndex() и .splice()
-      const deletedIndex = todo.findIndex((item)  => item.id === id);
-      todo.splice(deletedIndex, 1);
+      // const deletedIndex = todo.findIndex((item)  => item.id === id);
+      // todo.splice(deletedIndex, 1);
       
       // render list
       renderList();
     }
 
-    // событие клика
-    buton.addEventListener('click', () => {
+    // событие клика на кнопку
+    button.addEventListener('click', () => {
       addTodo();
     });
 
     // событие нажатия Enter в поле ввода
     input.addEventListener('keydown', (event) => {
-      if (event.key === 'Enter') {
+      const value = event.target.value;
+
+      if (value && event.key === 'Enter') {
         addTodo();
       }
     });
